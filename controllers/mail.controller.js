@@ -22,13 +22,9 @@ OAuth2_client.setCredentials({refresh_token: process.env.OAUTH_REFRESH_TOKEN});
 
 exports.sendMail = async function(req, res)  {
 	const accessToken = OAuth2_client.getAccessToken();
-    let {name,email, amount, cartItems} = req.body;
+    let {name,email, amount, phone} = req.body;
 	let wappLink;
-	for(let i=0;i<cartItems.length;i++){
-		if(cartItems[i].title == "InFocus"){
-			wappLink = "https://www.instagram.com/infocus_2020/";
-		}
-	}
+	
   const transport = nodemailer.createTransport({
     service: 'gmail',
     auth: {
