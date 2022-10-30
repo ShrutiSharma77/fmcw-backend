@@ -3,7 +3,8 @@ const nodemailer = require('nodemailer');
 const index = require('./user.controller');
 const userModel = require('../models/User_m');
 var randomstring = require("randomstring");
-
+const {google} = require('googleapis');
+const OAuth2 = google.auth.OAuth2;
 const CryptoJS = require("crypto-js");
 const paModel = require("../models/pa_m");
 // const userModel = require("../models/User_m");
@@ -16,8 +17,11 @@ const dotenv = require('dotenv');
 dotenv.config({
   path: './config.env'
 });
+const OAuth2_client = new OAuth2(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET);
+OAuth2_client.setCredentials({refresh_token: process.env.OAUTH_REFRESH_TOKEN});
 
 exports.sendMail = async function(req, res)  {
+	const accessToken = OAuth2_client.getAccessToken();
     let {name,email, amount, cartItems} = req.body;
 	let wappLink;
 	for(let i=0;i<cartItems.length;i++){
@@ -33,7 +37,8 @@ exports.sendMail = async function(req, res)  {
       pass: process.env.MAIL_PASS,
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      refreshToken: process.env.OAUTH_REFRESH_TOKEN
+      refreshToken: process.env.OAUTH_REFRESH_TOKEN,
+	  accessToken: accessToken
     }
   })
   // const email = await usermodel.findOne({email: req.body.email});
