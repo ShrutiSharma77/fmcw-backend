@@ -105,7 +105,93 @@ app.set('view engine', 'ejs');
 //   // Pass to next layer of middleware
 //   next();
 // });
+//Admin DashBoard
+app.use(express.static("public"));
+const Details=[];
+var total;
+var totalOrders=0;
+var totalPayments=0;
+const http = require("https");
+app.get("/admindashboard", function(req, res) {
+  res.render("adminDashboard", {
+      Details: Details,
+      total:total,
+      totalOrders:totalOrders,
+      totalPayments:totalPayments
+  });
 
+});
+app.get("/admindashboarduser", function(req, res) {
+  res.render("users", {
+      Details: Details,
+      total:total,
+      totalOrders:totalOrders,
+      totalPayments:totalPayments
+  });
+
+});
+const options = {
+  "method": "GET",
+  "hostname": "fmcw-backend1.onrender.com",
+  "port": null,
+  "path": "/api/alluser",
+  "headers": {
+    "Accept": "*/*",
+  }
+};
+
+const req = http.request(options, function (res) {
+  const chunks = [];
+
+  res.on("data", function (chunk) {
+    chunks.push(chunk);
+  });
+
+  res.on("end", function () {
+    const body = Buffer.concat(chunks);
+    const n=body.toString();
+    const k=JSON.parse(n);
+    total=k.data.length;
+  
+    for (let index = 0; index <k.data.length; index++) {
+      var detail={};
+if(k.data[index].userCart!=null){
+
+detail={
+  name:k.data[index].name,
+  email:k.data[index].email,
+  college:k.data[index].college,
+  instaHandle:k.data[index].instaHandle,
+  number:k.data[index].number,
+  yearOfStudy:k.data[index].yearOfStudy,
+  id:k.data[index]._id,
+  cartItems:k.data[index].userCart.cartItems
+}
+totalOrders=totalOrders+k.data[index].userCart.cartItems.length;
+for(let j = 0; j <k.data[index].userCart.cartItems.length; j++){
+      totalPayments=totalPayments+k.data[index].userCart.cartItems[j].price     
+  }
+        }
+        else{
+          detail={
+            name:k.data[index].name,
+            email:k.data[index].email,
+            college:k.data[index].college,
+            instaHandle:k.data[index].instaHandle,
+            number:k.data[index].number,
+            yearOfStudy:k.data[index].yearOfStudy,
+            id:k.data[index]._id,
+            cartItems:[]
+          }
+        }
+        Details.push(detail);
+
+    
+      }
+  });
+});
+
+req.end();
 //ROUTERS
 const rout = require('./routers/index.router.js');
 const eventrout = require('./routers/event.router.js');
@@ -115,6 +201,10 @@ const userrout= require('./routers/user.router');
 const cartrout= require('./routers/cart.router');         
 const paymentrout = require('./services/instamojoPayment');
 const mailrout = require('./routers/mail.router');
+
+
+
+
 // ROUTES
 app.get('/api/test', (req, res) => {
   res.json({message: 'API Running successfully'});
@@ -136,9 +226,7 @@ app.all('*', (req, res) => {
     message: 'Given route does not exist'
   })
 })
-
 // const decrypted = CryptoJS.AES.decrypt(encrypted, "Message").toString(CryptoJS.enc.Utf8);
-
 // DATABASE CONNECTION
 const DB = process.env.DATABASE;
 mongoose.connect(DB, {
@@ -151,7 +239,8 @@ mongoose.connect(DB, {
   console.log(err);
 })
 
+
 // APP SETUP
 app.listen(process.env.PORT || 8000, function (err, result) {
-  console.log("Server is running at port!");
+  console.log(`Server is running at port! ${process.env.PORT}`);
 });
