@@ -12,6 +12,9 @@ const CartSchema = new Schema({
         link: String,
         price: Number,
         prize: String,
+        color: String,
+        color2: String,
+        content: String,
         payment: {
             status: {
                 type: Number,
