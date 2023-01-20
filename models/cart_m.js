@@ -33,6 +33,10 @@ const CartSchema = new Schema({
         verifyStatus: {
             type: Boolean,
             default: false
+        },
+        transactionID: {
+            type: String,
+            default: null
         }
     }]
 })

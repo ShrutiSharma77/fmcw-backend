@@ -280,6 +280,8 @@ const leaderrout = require('./routers/leader.router.js');
 const userrout= require('./routers/user.router');         
 const cartrout= require('./routers/cart.router');         
 const paymentrout = require('./services/instamojoPayment');
+const parout = require('./routers/pa.router');
+
 const mailrout = require('./routers/mail.router');
 const visitor=require('./routers/visitors');
 
@@ -300,6 +302,8 @@ app.use('/api', userrout);
 app.use('/api', cartrout);
 app.use('/api', paymentrout);
 app.use('/api', mailrout);
+app.use('/api', parout);
+
 app.use('/api',visitor)
 app.all('*', (req, res) => {
   res.status(404).json({

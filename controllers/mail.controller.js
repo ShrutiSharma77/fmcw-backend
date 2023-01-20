@@ -22,7 +22,7 @@ OAuth2_client.setCredentials({refresh_token: process.env.OAUTH_REFRESH_TOKEN});
 
 exports.sendMail = async function(req, res)  {
 	const accessToken = OAuth2_client.getAccessToken();
-    let {name,email, amount, phone} = req.body;
+    let {name,email, amount, phone, transactionID} = req.body;
 	let wappLink;
 	
   const transport = nodemailer.createTransport({
@@ -412,6 +412,7 @@ exports.sendMail = async function(req, res)  {
 							</table>
 							<p>This is a really simple email template. Its sole purpose is to get the recipient to click the button with no distractions.</p>
 							<p>Amount: ₹ ${amount}.</p>
+							<p>Transaction ID: ${transactionID}</p>
 						  </td>
 						</tr>
 					  </table>
