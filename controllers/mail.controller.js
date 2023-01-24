@@ -14,6 +14,7 @@ const { request } = require("https");
 const { getGoogleUserInfo } = require('../middleware/goath');
 const mongoose = require("mongoose");
 const dotenv = require('dotenv');
+const CartModel = require('../models/cart_m');
 dotenv.config({
   path: './config.env'
 });
@@ -40,7 +41,7 @@ exports.sendMail = async function(req, res)  {
   // const email = await usermodel.findOne({email: req.body.email});
   await transport.sendMail({
     from: process.env.MAIL_FROM,
-    to: email,
+    to: "somesh.ranjan.met20@itbhu.ac.in",
     subject: "FMCW'23",
     html: `<!doctype html>
 	<html>

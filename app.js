@@ -9,6 +9,7 @@ const express = require("express");
 const app = express();
 const methodOverride = require("method-override");
 const mongoose = require('mongoose');
+const paymentDetails = require('./controllers/pa.controller')
 // const CryptoJS = require('crypto-js');
 const cors = require('cors');
 
@@ -219,7 +220,9 @@ const options = {
     "Accept": "*/*",
   }
 };
+app.get('/admindashboardUser', function(req, res) {
 
+})
 const req = http.request(options, function (res) {
   const chunks = [];
 
@@ -232,7 +235,15 @@ const req = http.request(options, function (res) {
     const n=body.toString();
     const k=JSON.parse(n);
     total=k.data.length;
-  
+  var verifystatus = function() {
+    for (let index = 0; index <k.data.length; index++) {
+      for(let i=0;i<k.data[index].userCart.cartItems[i].length;i++) {
+        
+        k.data[index].userCart.cartItems[i].verifyStatus = true;
+      
+      }
+    }
+  }
     for (let index = 0; index <k.data.length; index++) {
       var detail={};
 if(k.data[index].userCart!=null){
@@ -242,10 +253,12 @@ detail={
   email:k.data[index].email,
   college:k.data[index].college,
   instaHandle:k.data[index].instaHandle,
+  role: k.data[index].role,
   number:k.data[index].number,
   yearOfStudy:k.data[index].yearOfStudy,
+  transactionID: k.data[index].transactionID,
   id:k.data[index]._id,
-  cartItems:k.data[index].userCart.cartItems
+  cartItems:k.data[index].userCart.cartItems,
 }
 totalOrders=totalOrders+k.data[index].userCart.cartItems.length;
 for(let j = 0; j <k.data[index].userCart.cartItems.length; j++){
@@ -260,6 +273,7 @@ for(let j = 0; j <k.data[index].userCart.cartItems.length; j++){
             instaHandle:k.data[index].instaHandle,
             number:k.data[index].number,
             yearOfStudy:k.data[index].yearOfStudy,
+            transactionID: k.data[index].transactionID,
             id:k.data[index]._id,
             cartItems:[]
           }
@@ -280,7 +294,7 @@ const leaderrout = require('./routers/leader.router.js');
 const userrout= require('./routers/user.router');         
 const cartrout= require('./routers/cart.router');         
 const paymentrout = require('./services/instamojoPayment');
-const parout = require('./routers/pa.router');
+// const parout = require('./routers/pa.router');
 
 const mailrout = require('./routers/mail.router');
 const visitor=require('./routers/visitors');
@@ -295,14 +309,14 @@ app.post("/api/google-login", loginFunc);
 app.post("/api/verify-token", verifyToken);
 app.post('/api/logout', logoutFunc);
 app.use('/api', rout);
-// app.use('/api', eventrout);
+app.use('/api', eventrout);
 app.use('/api', registerrout);
 app.use('/api', leaderrout);
 app.use('/api', userrout);
 app.use('/api', cartrout);
 app.use('/api', paymentrout);
 app.use('/api', mailrout);
-app.use('/api', parout);
+// app.use('/api', parout);
 
 app.use('/api',visitor)
 app.all('*', (req, res) => {

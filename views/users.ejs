@@ -24,6 +24,10 @@
 						<p><%=data.college%></p>
 					</div>
 					<div class="data">
+						<h4>Transaction ID</h4>
+						<p><%=data.transactionID%></p>
+					</div>
+					<div class="data">
 						<h4>Insta Handle</h4>
 						<p><%=data.instaHandle%></p>
 					</div>
@@ -62,7 +66,7 @@
 							<div class="data">
 								<h4>Payment Status</h4>
 								<%  data.cartItems.forEach((datas) => { %>
-									<p>	<%=datas.verifyStatus%></p>
+									<input type="submit" onclick="verifystatus()" value=<%=datas.verifyStatus%> />
 									<% }); %>
 								</div>
 								<div class="data">
