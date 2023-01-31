@@ -235,6 +235,7 @@ const req = http.request(options, function (res) {
 
     for (let index = 0; index < k.data.length; index++) {
       var detail = {};
+      
       if (k.data[index].userCart != null) {
 
         detail = {
@@ -248,9 +249,13 @@ const req = http.request(options, function (res) {
           id: k.data[index]._id,
           cartItems: k.data[index].userCart.cartItems,
         }
-
-        totalOrders = totalOrders + k.data[index].userCart.cartItems.length;
-
+        for (let j = 0; j < k.data[index].userCart.cartItems.length; j++) {
+        if(k.data[index].userCart.cartItems[j].verifyStatus===true) {
+          Details.push(detail);
+          total = Details.length;
+          totalOrders = totalOrders + k.data[index].userCart.cartItems.length;
+        }
+      }
 
       }
       else {
@@ -267,17 +272,21 @@ const req = http.request(options, function (res) {
         }
       }
 
-      Details.push(detail);
-      total = Details.length
+      for (let j = 0; j < k.data[index].userCart.cartItems.length; j++) {
+        if(k.data[index].userCart.cartItems[j].verifyStatus===true) {
+          Details.push(detail);
+          total = Details.length;
+          totalOrders = totalOrders + k.data[index].userCart.cartItems.length;
+        }
+      }
+      
       var re1 = /@itbhu.ac.in\s*$/;
       var re2 = /@iitbhu.ac.in\s*$/;
       const x = re1.test(k.data[index].email) || re2.test(k.data[index].email)
       if (re1.test(k.data[index].email) || re2.test(k.data[index].email)) {
         Details.pop(detail);
         total = Details.length
-        // totalOrders=totalOrders-k.data[index].userCart.cartItems.length;
-
-      }
+    }
 
       for (let j = 0; j < k.data[index].userCart.cartItems.length; j++) {
         if (!re1.test(k.data[index].email) || !re2.test(k.data[index].email)) {
