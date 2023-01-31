@@ -281,7 +281,9 @@ const req = http.request(options, function (res) {
 
       for (let j = 0; j < k.data[index].userCart.cartItems.length; j++) {
         if (!re1.test(k.data[index].email) || !re2.test(k.data[index].email)) {
+          if(k.data[index].userCart.cartItems[j].verifyStatus===true) {
           totalPayments = totalPayments + k.data[index].userCart.cartItems[j].price
+          }
         }
       }
     }
