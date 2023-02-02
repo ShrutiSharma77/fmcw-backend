@@ -15,6 +15,14 @@ const CartSchema = new Schema({
         color: String,
         color2: String,
         content: String,
+        time: String,
+        date: String,
+        desc: String,
+        name: String,
+        img1: String,
+        img2: String,
+        price1: Number,
+        price2: Number,
         payment: {
             status: {
                 type: Number,
