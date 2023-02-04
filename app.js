@@ -221,85 +221,83 @@ const options = {
 app.get('/admindashboardUser', function (req, res) {
 
 })
-const req = http.request(options, function (res) {
-  const chunks = [];
+// const req = http.request(options, function (res) {
+//   const chunks = [];
 
-  res.on("data", function (chunk) {
-    chunks.push(chunk);
-  });
+//   res.on("data", function (chunk) {
+//     chunks.push(chunk);
+//   });
 
-  res.on("end", function () {
-    const body = Buffer.concat(chunks);
-    const n = body.toString();
-    const k = JSON.parse(n);
+//   res.on("end", function () {
+//     const body = Buffer.concat(chunks);
+//     const n = body.toString();
+//     const k = JSON.parse(n);
 
-    for (let index = 0; index < k.data.length; index++) {
-      var detail = {};
+//     for (let index = 0; index < k.data.length; index++) {
+//       var detail = {};
       
-      if (k.data[index].userCart != null) {
+//       if (k.data[index].userCart != null) {
 
-        detail = {
-          name: k.data[index].name,
-          email: k.data[index].email,
-          college: k.data[index].college,
-          instaHandle: k.data[index].instaHandle,
-          number: k.data[index].number,
-          yearOfStudy: k.data[index].yearOfStudy,
-          transactionID: k.data[index].transactionID,
-          id: k.data[index]._id,
-          cartItems: k.data[index].userCart.cartItems,
-        }
-        for (let j = 0; j < k.data[index].userCart.cartItems.length; j++) {
-        if(k.data[index].userCart.cartItems[j].verifyStatus===true) {
-          Details.push(detail);
-          total = Details.length;
-          totalOrders = totalOrders + k.data[index].userCart.cartItems.length;
-        }
-      }
+//         detail = {
+//           name: k.data[index].name,
+//           email: k.data[index].email,
+//           college: k.data[index].college,
+//           instaHandle: k.data[index].instaHandle,
+//           number: k.data[index].number,
+//           yearOfStudy: k.data[index].yearOfStudy,
+//           transactionID: k.data[index].transactionID,
+//           id: k.data[index]._id,
+//           cartItems: k.data[index].userCart.cartItems,
+//         }
 
-      }
-      else {
-        detail = {
-          name: k.data[index].name,
-          email: k.data[index].email,
-          college: k.data[index].college,
-          instaHandle: k.data[index].instaHandle,
-          number: k.data[index].number,
-          yearOfStudy: k.data[index].yearOfStudy,
-          transactionID: k.data[index].transactionID,
-          id: k.data[index]._id,
-          cartItems: []
-        }
-      }
+        
+//         Details.push(detail);
 
-      for (let j = 0; j < k.data[index].userCart.cartItems.length; j++) {
-        if(k.data[index].userCart.cartItems[j].verifyStatus===true) {
-          Details.push(detail);
-          total = Details.length;
-          totalOrders = totalOrders + k.data[index].userCart.cartItems.length;
-        }
-      }
+//       //   for (let j = 0; j < k.data[index].userCart.cartItems.length; j++) {
+//       //   if(k.data[index].userCart.cartItems[j].verifyStatus===true) {
+//       //     total = Details.length;
+//       //     totalOrders = totalOrders + k.data[index].userCart.cartItems.length;
+//       //   }
+//       // }
+
+//       }
+//       else {
+//         detail = {
+//           name: k.data[index].name,
+//           email: k.data[index].email,
+//           college: k.data[index].college,
+//           instaHandle: k.data[index].instaHandle,
+//           number: k.data[index].number,
+//           yearOfStudy: k.data[index].yearOfStudy,
+//           transactionID: k.data[index].transactionID,
+//           id: k.data[index]._id,
+//           cartItems: []
+//         }
+//       }
+
+//       for (let j = 0; j < k.data[index].userCart.cartItems.length; j++) {
+//         if(k.data[index].userCart.cartItems[j].verifyStatus===true) {
+//           Details.push(detail);
+//           total = Details.length;
+//           totalOrders = totalOrders + k.data[index].userCart.cartItems.length;
+//           totalPayments = totalPayments + k.data[index].userCart.cartItems[j].price
+//         }
+//       }
       
-      var re1 = /@itbhu.ac.in\s*$/;
-      var re2 = /@iitbhu.ac.in\s*$/;
-      const x = re1.test(k.data[index].email) || re2.test(k.data[index].email)
-      if (re1.test(k.data[index].email) || re2.test(k.data[index].email)) {
-        Details.pop(detail);
-        total = Details.length
-    }
+//       var re1 = /@itbhu.ac.in\s*$/;
+//       var re2 = /@iitbhu.ac.in\s*$/;
+//       const x = re1.test(k.data[index].email) || re2.test(k.data[index].email)
+//       if (re1.test(k.data[index].email) || re2.test(k.data[index].email)) {
+//         Details.pop(detail);
+//         total = Details.length
+//     }
 
-      for (let j = 0; j < k.data[index].userCart.cartItems.length; j++) {
-        if (!re1.test(k.data[index].email) || !re2.test(k.data[index].email)) {
-          if(k.data[index].userCart.cartItems[j].verifyStatus===true) {
-          totalPayments = totalPayments + k.data[index].userCart.cartItems[j].price
-          }
-        }
-      }
-    }
-  });
-});
+      
+//     }
+//   });
+// });
 
-req.end();
+// req.end();
 //ROUTERS
 const rout = require('./routers/index.router.js');
 const eventrout = require('./routers/event.router.js');
